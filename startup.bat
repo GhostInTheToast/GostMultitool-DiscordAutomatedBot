@@ -1,14 +1,11 @@
-cls
+@ECHO OFF
 
 IF not exist "%CD%\venv\" py -3 -m venv venv
 call venv\Scripts\activate
 
-python -m pip install -U pip
+pip install -U pip >nul
 
-python -m pip install -U discord.py[voice]
-
-python -m pip install -U requests
-
-python -m pip install -U BeautifulSoup4
+python -m discord
+IF %ERRORLEVEL% NEQ 0 pip install -r requirements.txt
 
 python BotMain.py

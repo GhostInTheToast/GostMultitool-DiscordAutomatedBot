@@ -1,12 +1,8 @@
-#!/usr/bin/env python3
-
 import discord
 from discord.ext import commands
 from discord.ext.commands import Bot, has_permissions
 import _asyncio
 from datetime import date
-
-
 import helpers.SteamInfoPuller
 import helpers.Flip
 from helpers.Flip import rsItem
@@ -17,11 +13,10 @@ client = commands.Bot(command_prefix='$')
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.online, activity=discord.Game('idk wat dat')) # activity changes the "Playing" section of the status profile
+    await client.change_presence(status=discord.Status.online, activity=discord.Game(helpers.SteamInfoPuller.SelectRandomGame()))
     print('Bot logging in as {0.user}'.format(client))
 
-###################################################################################
-############   COMMANDS START HERE  #########################################################
+# Start of commands
 
 @commands.cooldown(1, 3, commands.BucketType.guild)
 @client.command()
@@ -35,7 +30,6 @@ async def rsitem(ctx, *item):
         item = (" ".join(item[:]))
         await ctx.channel.send(rsItem(item))
 
-
 @client.command()
 async def kill(ctx, amt):
     if ctx.author.id == 150009383592525826:
@@ -43,13 +37,15 @@ async def kill(ctx, amt):
         await ctx.channel.send("Killed {}".format(amt) + " messages.")
 
 @client.command()
-async def steam(ctx, *game_name):
+async def steam(ctx, arg):
     if ctx.author.id != 267402012742778891:
-        game_name = (" ".join(game_name[:]))
-        await ctx.channel.send(helpers.SteamInfoPuller.steamGameSearch(game_name))
+        await ctx.channel.send(helpers.SteamInfoPuller.SteamGameSearch(arg))
 
-###### END OF COMMANDS #########################################################
-################################################################################
+@client.command()
+async def hello(ctx):
+    await ctx.channel.send('helo dood :D')
+
+# Start of commands
 
 @client.event
 async def on_message(message):
@@ -57,7 +53,7 @@ async def on_message(message):
         return
     await client.process_commands(message)
 
-    if message.guild.id == 213868052373045248 or message.guild.id == 476472672625098752: #graveyard or bikini bottom ####################################################
+    if message.guild.id == 213868052373045248 or message.guild.id == 476472672625098752: # graveyard or bikini bottom
         #if message.content == 'test':
            #await message.channel.send(type(message.author.joined_at))
            #await message.channel.send(type(date.today()))
@@ -72,7 +68,7 @@ async def on_message(message):
             if "dark souls" in message.content.lower():
                 await message.add_reaction(emoji='😔')
 
-    if message.guild.id == 213330594749349888: # ninjacord ###################################################
+    if message.guild.id == 213330594749349888: # ninjacord
         if message.content.startswith("$classhelp"):
             await message.channel.send("Remember to direct all ninja/kuno questions to the channels #ninja-help and #kuno-help!")
         
