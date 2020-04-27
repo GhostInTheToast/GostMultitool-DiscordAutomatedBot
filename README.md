@@ -8,6 +8,7 @@
 
 ### Requirements
  - Python3
+ - Pip
  - The key has to be provided in a **DiscordBotKey.py** file inside **helpers** folder like this:
 
 		private_Key = 'Private key aka. Token here' 
